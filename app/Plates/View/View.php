@@ -6,7 +6,8 @@ class View
 {
     public $layout = null;
 
-    public $layoutContents = null;
+    public $layoutData = null;
+
     public static function configure()
     {
         return new static();
@@ -15,6 +16,22 @@ class View
     public function layout(string $layout, array $data = []): self
     {
         $this->layout = $layout;
+        $this->layoutData = $data;
+
+        return $this;
+    }
+
+    public function renderWithLayout($viewContent): string
+    {
+        $layoutDirectory = app()->basePath() . '/resources/views/layouts/';
+
+        $layoutPath = $layoutDirectory . $this->layout . '.php';
+
+        if (!file_exists($layoutPath)) {
+            throw new \Exception("Layout not found: {$layoutPath}");
+        }
+
+        $data = $this->layoutData;
 
         /**
          * Extract the data array to variables
@@ -22,19 +39,18 @@ class View
         if (!empty($data)) {
             extract($data);
         }
+
+        $slot = rand();
         /**
-         * Return string of the component view with the data passed to it
+         * Return string of the layout view with the data passed to it
          */
         ob_start();
+        include $layoutPath;
+        $contents = ob_get_clean();
 
-        include app()->basePath() . '/resources/views/layouts/' . $layout . '.php';
+        $contents = str_replace($slot, $viewContent, $contents);
 
-        $this->layoutContents = ob_get_clean();
-        if ($this->layoutContents) {
-            $this->layoutContents = str_replace('{{ $slot }}', '', $this->layoutContents);
-        }
-
-        return $this;
+        return $contents;
     }
 
     public function renderComponent(string $component, array $data = []): string
@@ -66,10 +82,9 @@ class View
          * If the layout is set, replace the {{ $slot }} with the component output
          */
         if ($this->layout) {
-            $this->layoutContents = str_replace('{{ $slot }}', $output, $this->layoutContents);
-            return $this->layoutContents;
+            return $this->renderWithLayout($output);
         }
-        
+
         return $output;
     }
 }

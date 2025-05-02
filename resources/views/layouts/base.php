@@ -7,6 +7,8 @@
     <title><?= $title ?? 'Document' ?></title>
 </head>
 
-<body></body>
+<body>
+   <?=$slot?>
+</body>
 
 </html>
