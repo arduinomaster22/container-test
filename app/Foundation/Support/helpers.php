@@ -19,8 +19,3 @@ function view(): \App\Plates\View\View
 {
     return app()->view();
 }
-
-function str($str = ''): Stringable
-{
-    return Str::of($str);
-}
