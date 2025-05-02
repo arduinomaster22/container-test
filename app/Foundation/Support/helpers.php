@@ -1,6 +1,7 @@
 <?php
 
 use App\Foundation\App;
+use Illuminate\Support\Str;
 use App\Foundation\Container;
 use App\Plates\Request\Request;
 
@@ -17,4 +18,9 @@ function request(): Request
 function view(): \App\Plates\View\View
 {
     return app()->view();
+}
+
+function str($str = ''): Stringable
+{
+    return Str::of($str);
 }
