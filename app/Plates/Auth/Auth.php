@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Plates\Auth;
 
 class Auth implements AuthInterface
 {

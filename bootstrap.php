@@ -1,15 +1,13 @@
 <?php
 
+use App\Foundation\App;
+use App\Foundation\Container;
+
 require_once __DIR__ . '/vendor/autoload.php';
 
-use App\App;
-use App\Container;
+$container = Container::make(__DIR__);
 
-$container = Container::make();
+$container->registerHelpers();
 
 App::setInstance($container);
 
-function app()
-{
-    return App::getInstance();
-}

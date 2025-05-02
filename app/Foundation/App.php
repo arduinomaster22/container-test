@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Foundation;
 
 class App
 {
@@ -14,5 +14,10 @@ class App
     public static function getInstance(): Container
     {
         return self::$instance;
+    }
+
+    public static function __callStatic($name, $arguments)
+    {
+        return static::getInstance()->$name(...$arguments);
     }
 }
