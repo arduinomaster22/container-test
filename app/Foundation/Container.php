@@ -8,7 +8,7 @@ class Container
 
     protected static array $providers;
 
-    public function __construct($basePath)
+    public function __construct()
     {
         static::$providers = [
             'auth' => \App\Plates\Auth\AuthProvider::class,

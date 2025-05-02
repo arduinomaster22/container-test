@@ -2,8 +2,11 @@
 
 use App\Foundation\App;
 use App\Foundation\Container;
+use Spatie\Ignition\Ignition;
 
-require_once __DIR__.'/vendor/autoload.php';
+include __DIR__ . '/vendor/autoload.php';
+
+Ignition::make()->register();
 
 $container = Container::make(__DIR__);
 

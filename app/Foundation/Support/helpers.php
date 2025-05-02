@@ -14,7 +14,7 @@ function request(): Request
     return app()->request();
 }
 
-function view($view, $data = [])
+function view(): \App\Plates\View\View
 {
-    return app()->view()->renderComponent($view, $data);
+    return app()->view();
 }
