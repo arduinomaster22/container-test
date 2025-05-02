@@ -1,0 +1,8 @@
+#!/usr/bin/env php
+<?php
+
+use App\Container;
+
+require_once __DIR__ . '/bootstrap.php';
+
+dd(Container::getAuthUser()->getName());
