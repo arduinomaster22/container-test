@@ -2,8 +2,6 @@
 
 namespace App\Plates\Request;
 
-use App\Plates\Request\Request;
-
 class RequestProvider
 {
     public static function make()

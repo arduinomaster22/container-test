@@ -46,7 +46,7 @@ class RoutingProvider
 
     public static function executeRoute($route)
     {
-        if (!is_null($route['callback'])) {
+        if (! is_null($route['callback'])) {
             $callback = $route['callback'];
 
             return $callback();
@@ -57,6 +57,6 @@ class RoutingProvider
 
     public static function resolveRoutes()
     {
-        include app()->basePath() . '/routes/web.php';
+        include app()->basePath().'/routes/web.php';
     }
 }

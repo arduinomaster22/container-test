@@ -2,7 +2,6 @@
 
 namespace App\Foundation;
 
-
 class Container
 {
     protected static array $values;
@@ -39,7 +38,7 @@ class Container
 
     public static function registerHelpers(): void
     {
-        include static::get('basePath') . '/app/Foundation/Support/helpers.php';
+        include static::get('basePath').'/app/Foundation/Support/helpers.php';
     }
 
     public function __call($name, $arguments)

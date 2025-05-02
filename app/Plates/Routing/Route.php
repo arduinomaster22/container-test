@@ -6,7 +6,7 @@ class Route
 {
     public static function get($uri, $callback): static
     {
-        $entry =  [
+        $entry = [
             'method' => 'GET',
             'uri' => $uri,
             'callback' => $callback,

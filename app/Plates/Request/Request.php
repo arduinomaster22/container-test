@@ -8,7 +8,7 @@ class Request
     {
         $request = RequestResolver::getRequest();
 
-        return new static();
+        return new static;
     }
 
     public function input($key, $default = null)
@@ -16,7 +16,6 @@ class Request
         $request = RequestResolver::getRequest();
 
         $getParameters = $request['get'];
-
 
         return isset($getParameters[$key]) ? $getParameters[$key] : $default;
     }

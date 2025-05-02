@@ -10,7 +10,7 @@ class View
 
     public static function configure()
     {
-        return new static();
+        return new static;
     }
 
     public function layout(string $layout, array $data = []): self
@@ -23,11 +23,11 @@ class View
 
     public function renderWithLayout($viewContent): string
     {
-        $layoutDirectory = app()->basePath() . '/resources/views/layouts/';
+        $layoutDirectory = app()->basePath().'/resources/views/layouts/';
 
-        $layoutPath = $layoutDirectory . $this->layout . '.php';
+        $layoutPath = $layoutDirectory.$this->layout.'.php';
 
-        if (!file_exists($layoutPath)) {
+        if (! file_exists($layoutPath)) {
             throw new \Exception("Layout not found: {$layoutPath}");
         }
 
@@ -36,7 +36,7 @@ class View
         /**
          * Extract the data array to variables
          */
-        if (!empty($data)) {
+        if (! empty($data)) {
             extract($data);
         }
 
@@ -55,19 +55,18 @@ class View
 
     public function renderComponent(string $component, array $data = []): string
     {
-        $componentDirectory = app()->basePath() . '/resources/views/';
+        $componentDirectory = app()->basePath().'/resources/views/';
 
-        $componentPath = $componentDirectory . $component . '.php';
+        $componentPath = $componentDirectory.$component.'.php';
 
-        if (!file_exists($componentPath)) {
+        if (! file_exists($componentPath)) {
             throw new \Exception("Component not found: {$componentPath}");
         }
-
 
         /**
          * Extract the data array to variables
          */
-        if (!empty($data)) {
+        if (! empty($data)) {
             extract($data);
         }
 
