@@ -6,9 +6,14 @@ class Container
 {
     protected static array $values;
 
-    public static function make(): void
+    public function __construct()
     {
-        self::set('auth', Auth::configure());
+        static::set('auth', Auth::configure());
+    }
+
+    public static function make()
+    {
+        return new static();
     }
 
     public static function set($key, mixed $value): void
