@@ -13,7 +13,7 @@ Route::get('/', function () {
 
 
 Route::get('/about', function () {
-    return App::view()
+    return app()->view()
         ->layout('base', ['title' => 'About'])
         ->renderComponent('site', ['request' => app()->request()])
     ;

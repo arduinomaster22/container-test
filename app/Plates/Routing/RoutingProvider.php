@@ -8,7 +8,7 @@ class RoutingProvider
 
     public static function make()
     {
-        static::configure();
+        return static::configure();
     }
 
     public static function configure()
@@ -17,9 +17,15 @@ class RoutingProvider
 
         $requestRelativePath = $_SERVER['REQUEST_URI'];
 
+        $requestRelativePath = parse_url($requestRelativePath, PHP_URL_PATH);
+
         $route = static::findRoute($requestRelativePath);
 
-        return static::executeRoute($route);
+        if (is_null($route)) {
+            throw new \Exception("Route not found for path: {$requestRelativePath}");
+        }
+
+        static::renderRoute($route);
     }
 
     public static function findRoute($requestRelativePath)
@@ -33,15 +39,20 @@ class RoutingProvider
         return null;
     }
 
+    public static function renderRoute($route)
+    {
+        echo static::executeRoute($route);
+    }
+
     public static function executeRoute($route)
     {
         if (!is_null($route['callback'])) {
             $callback = $route['callback'];
 
-            echo $callback();
+            return $callback();
         }
 
-        echo null;
+        return null;
     }
 
     public static function resolveRoutes()
