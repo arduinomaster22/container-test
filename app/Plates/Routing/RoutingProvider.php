@@ -13,13 +13,13 @@ class RoutingProvider
 
     public static function configure()
     {
-        static::resolveRoutes();
+        $routes = static::resolveRoutes();
 
         $requestRelativePath = $_SERVER['REQUEST_URI'];
 
         $requestRelativePath = parse_url($requestRelativePath, PHP_URL_PATH);
 
-        $route = static::findRoute($requestRelativePath);
+        $route = static::findRoute($requestRelativePath, $routes);
 
         if (is_null($route)) {
             throw new \Exception("Route not found for path: {$requestRelativePath}");
@@ -28,10 +28,13 @@ class RoutingProvider
         static::renderRoute($route);
     }
 
-    public static function findRoute($requestRelativePath)
+    public static function findRoute($requestRelativePath, $routes)
     {
-        foreach (static::$routes as $route) {
-            if ($route['uri'] === $requestRelativePath) {
+        /**
+         * @var Route $route
+         */
+        foreach ($routes as $route) {
+            if ($route->getUri() === $requestRelativePath) {
                 return $route;
             }
         }
@@ -39,15 +42,15 @@ class RoutingProvider
         return null;
     }
 
-    public static function renderRoute($route)
+    public static function renderRoute(Route $route)
     {
         echo static::executeRoute($route);
     }
 
-    public static function executeRoute($route)
+    public static function executeRoute(Route $route)
     {
-        if (! is_null($route['callback'])) {
-            $callback = $route['callback'];
+        if (! is_null($route->getCallback())) {
+            $callback = $route->getCallback();
 
             return $callback();
         }
@@ -57,6 +60,10 @@ class RoutingProvider
 
     public static function resolveRoutes()
     {
-        include app()->basePath().'/routes/web.php';
+        include_once app()->basePath() . '/routes/web.php';
+
+        $routes = RoutingContainer::getRoutes();
+
+        return $routes;
     }
 }

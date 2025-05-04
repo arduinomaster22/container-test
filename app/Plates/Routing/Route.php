@@ -4,24 +4,52 @@ namespace App\Plates\Routing;
 
 class Route
 {
-    public static function get($uri, $callback): static
+    public $name;
+    public $method;
+    public $uri;
+    public $callback;
+
+    public function __construct($method, $uri, $callback)
     {
-        $entry = [
-            'method' => 'GET',
-            'uri' => $uri,
-            'callback' => $callback,
-            'name' => null,
-        ];
-
-        RoutingProvider::$routes[] = $entry;
-
-        return new static($entry);
+        $this->method = $method;
+        $this->uri = $uri;
+        $this->callback = $callback;
     }
 
-    public function name($name): self
+    public static function get($uri, $callback): static
     {
-        RoutingProvider::$routes[count(RoutingProvider::$routes) - 1]['name'] = $name;
+        return new static('GET', $uri, $callback);
+    }
+
+    public function name($name): static
+    {
+        $this->name = $name;
 
         return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name ?? rand(1, 1000);
+    }
+
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
+
+    public function getUri(): string
+    {
+        return $this->uri;
+    }
+
+    public function getCallback(): callable
+    {
+        return $this->callback;
+    }
+
+    public function __destruct()
+    {
+        RoutingContainer::addRoute($this);
     }
 }

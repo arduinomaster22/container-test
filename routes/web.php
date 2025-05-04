@@ -2,6 +2,7 @@
 
 use App\Foundation\App;
 use App\Plates\Routing\Route;
+use App\Plates\Routing\RoutingContainer;
 
 Route::get('/', function () {
     return view()
@@ -15,4 +16,7 @@ Route::get('/about', function () {
         ->layout('base', ['title' => 'About'])
         ->renderComponent('site', ['request' => app()->request()]);
 })
-    ->name('about');
+    // ->name('about')
+    
+    ;
+
