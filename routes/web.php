@@ -1,14 +1,11 @@
 <?php
 
 use App\Foundation\App;
+use App\Http\Controllers\TestController;
 use App\Plates\Routing\Route;
 use App\Plates\Routing\RoutingContainer;
 
-Route::get('/', function () {
-    return view()
-        ->layout('base', ['title' => 'Home'])
-        ->renderComponent('site', ['request' => app()->request()]);
-})
+Route::get('/', [TestController::class, 'index'])   
     ->name('hi');
 
 Route::get('/about', function () {
@@ -17,6 +14,5 @@ Route::get('/about', function () {
         ->renderComponent('site', ['request' => app()->request()]);
 })
     // ->name('about')
-    
-    ;
 
+;

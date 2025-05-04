@@ -22,7 +22,8 @@ class RoutingProvider
         $route = static::findRoute($requestRelativePath, $routes);
 
         if (is_null($route)) {
-            throw new \Exception("Route not found for path: {$requestRelativePath}");
+            http_response_code(404);
+            exit;
         }
 
         static::renderRoute($route);
@@ -52,7 +53,19 @@ class RoutingProvider
         if (! is_null($route->getCallback())) {
             $callback = $route->getCallback();
 
-            return $callback();
+            if (is_callable($callback)) {
+                return $callback();
+            }
+
+            if (is_array($callback)) {
+                $controller = $callback[0];
+
+                $method = $callback[1];
+
+                if (class_exists($controller) && method_exists($controller, $method)) {
+                    return (new $controller())->$method();
+                }
+            }
         }
 
         return null;

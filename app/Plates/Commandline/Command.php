@@ -9,7 +9,26 @@ abstract class Command
 
     public function getName(): string
     {
-        return $this->name;
+        return explode(' ', $this->name)[0];
+    }
+
+    public function getParameters(): array
+    {
+        /**
+         * example = "migrate {data} {interest}"
+         */
+        $name = $this->getName();
+
+        $parameters = explode(' ', $this->name);
+        $parameters = array_slice($parameters, 1);
+        $parameters = array_map(function ($parameter) {
+            return trim($parameter, '{}');
+        }, $parameters);
+        $parameters = array_filter($parameters, function ($parameter) {
+            return !empty($parameter);
+        });
+
+        dd($parameters);
     }
 
     public function getDescription(): string
@@ -19,6 +38,6 @@ abstract class Command
 
     public function execute(...$args): void
     {
-        $this->handle($args);
+        $this->handle(...$args);
     }
 }

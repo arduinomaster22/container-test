@@ -2,12 +2,14 @@
 
 namespace App\Plates\Routing;
 
+use Closure;
+
 class Route
 {
     public $name;
     public $method;
     public $uri;
-    public $callback;
+    public Closure|array $callback;
 
     public function __construct($method, $uri, $callback)
     {
@@ -43,7 +45,7 @@ class Route
         return $this->uri;
     }
 
-    public function getCallback(): callable
+    public function getCallback(): callable|array
     {
         return $this->callback;
     }
