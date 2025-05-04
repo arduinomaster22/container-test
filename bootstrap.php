@@ -13,3 +13,4 @@ $container = Container::make(__DIR__);
 $container->registerHelpers();
 
 App::setInstance($container);
+

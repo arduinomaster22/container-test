@@ -8,6 +8,8 @@ class Container
 
     protected static array $providers;
 
+    public bool $isConsole = false;
+
     public function __construct()
     {
         static::$providers = [
@@ -16,7 +18,15 @@ class Container
             'requestResolver' => \App\Plates\Request\RequestProvider::class,
             'request' => \App\Plates\Request\ModifiedRequestProvider::class,
             'routing' => \App\Plates\Routing\RoutingProvider::class,
+            'database' => \App\Plates\Database\DatabaseProvider::class,
         ];
+
+        $this->boot();
+
+        // Set console mode
+        if (php_sapi_name() === 'cli') {
+            $this->isConsole = true;
+        }
     }
 
     public static function make($basePath)
@@ -38,9 +48,24 @@ class Container
 
     public static function registerHelpers(): void
     {
-        include static::get('basePath').'/app/Foundation/Support/helpers.php';
+        include static::get('basePath') . '/app/Foundation/Support/helpers.php';
     }
 
+    public function boot(): void
+    {
+        $baseProviders = [
+            \App\Plates\Commandline\CommandProvider::class,
+        ];
+
+        foreach ($baseProviders as $provider) {
+            if (class_exists($provider)) {
+                $instance = new $provider();
+                if (method_exists($instance, 'boot')) {
+                    $instance->boot();
+                }
+            }
+        }
+    }
     public function __call($name, $arguments)
     {
         if (isset(self::$providers[$name])) {
